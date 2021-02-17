@@ -2,8 +2,8 @@ import streamlit as st
 import time
 import numpy as np
 import json
-#import requests
-import urllib.request
+import requests
+#import urllib.request
 
 try:
     import streamlit.ReportThread as ReportThread
@@ -83,15 +83,21 @@ def update_music():
 
 
 def add_new_use_to_json(new_user_info):
-    #Esto funciona para archivos que tenga en el pc
-    with open(filepath) as json_file: 
-        data = json.load(json_file) 
-        #data = data['tempos']
-        data.append(new_user_info)
 
-    with open(filepath, 'w') as f:
-        json.dump(data, f, indent=4) 
+    r = requests.post(filepath, data=json.dumps(new_user_info))
+
+    #Esto funciona para archivos que tenga en el pc
+    #with open(filepath) as json_file: 
+    #    data = json.load(json_file) 
+    #    #data = data['tempos']
+    #    data.append(new_user_info)
+
+    #with open(filepath, 'w') as f:
+    #    json.dump(data, f, indent=4) 
         
+
+
+
     #json_file = urllib.request.urlopen(filepath) 
     #json_file = json_file.read()
     #if json_file == None or json_file == '':
