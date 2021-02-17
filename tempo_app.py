@@ -21,8 +21,11 @@ final_score = 0
 questions = ['I am a musician', 'I play a instrument but I don\'t consider myself a musician ',
              'I have ever played an instrument', 'I have never played an instrument']
 track_path = ['music/Atlantic_City.mp3',
+              'music/All_Stars.mp3',  
               'music/Atlantic_City1.mp3',
+              'music/All_Stars.mp3',
               'music/Atlantic_City2.mp3',
+              'music/All_Stars.mp3',
               'music/Atlantic_City3.mp3']
 names = ['1º Track', '2º Track', '3º Track', '4º Track', '5º Track', '6º Track', '7º Track', '8º Track', '9º Track',
          '10º Track', '11º Track', '12º Track', '13º Track', '14º Track', '15º Track', '16º Track', '17º Track',
@@ -83,7 +86,7 @@ def add_new_use_to_json(new_user_info):
     #Esto funciona para archivos que tenga en el pc
     with open(filepath) as json_file: 
         data = json.load(json_file) 
-        #data = data['tempos']
+        data = data['tempos']
         data.append(new_user_info)
 
     with open(filepath, 'w') as f:
