@@ -20,9 +20,9 @@ user_tempo_tracks = [0] * 30
 final_score = 0
 questions = ['I am a musician', 'I play a instrument but I don\'t consider myself a musician ',
              'I have ever played an instrument', 'I have never played an instrument']
-track_path = ['F:\\Universidad\\TFG\IBT\\SacarDatosAuto\\ibt-1.0-win64\\Atlantic_City.wav',
-              'F:\\Universidad\\TFG\IBT\\SacarDatosAuto\\ibt-1.0-win64\\Girl_On_Girl.wav',
-              'F:\\Universidad\\TFG\IBT\\SacarDatosAuto\\ibt-1.0-win64\\a.wav']
+track_path = ['music/Atlantic_City.wav',
+              'music/Girl_On_Girl.wav',
+              'music/a.wav']
 names = ['1º Track', '2º Track', '3º Track', '4º Track', '5º Track', '6º Track', '7º Track', '8º Track', '9º Track',
          '10º Track', '11º Track', '12º Track', '13º Track', '14º Track', '15º Track', '16º Track', '17º Track',
          '18º Track', '19º Track', '20º Track', '21º Track', '22º Track', '23º Track', '24º Track', '25º Track',
