@@ -281,7 +281,7 @@ if pressed3:
             session_state.first_time = False
             #json_data = {'tempos': [{'musical_exp': musical_exp, 'tempos_data': session_state.user_tempo_tracks}]}
             #json.dump(json_data, open(filepath, 'a'), indent=4, sort_key=True)
-            json_data = {'musical_exp': musical_exp, 'tempos_data': session_state.user_tempo_tracks}
+            json_data = {'musical_exp': musical_exp, 'tempos_data': session_state.user_tempo_tracks, "id": 0}
             #requests.post(filepath, data=json.dumps(json_data), headers=headers)
             add_new_use_to_json(json_data)
         if session_state.track_number == len(track_path) - 1:
