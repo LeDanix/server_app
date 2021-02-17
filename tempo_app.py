@@ -20,9 +20,10 @@ user_tempo_tracks = [0] * 30
 final_score = 0
 questions = ['I am a musician', 'I play a instrument but I don\'t consider myself a musician ',
              'I have ever played an instrument', 'I have never played an instrument']
-track_path = ['music/Atlantic_City.wav',
-              'music/Girl_On_Girl.wav',
-              'music/a.wav']
+track_path = ['music/Atlantic_City.mp3',
+              'music/Atlantic_City1.mp3',
+              'music/Atlantic_City2.mp3',
+              'music/Atlantic_City3.mp3']
 names = ['1º Track', '2º Track', '3º Track', '4º Track', '5º Track', '6º Track', '7º Track', '8º Track', '9º Track',
          '10º Track', '11º Track', '12º Track', '13º Track', '14º Track', '15º Track', '16º Track', '17º Track',
          '18º Track', '19º Track', '20º Track', '21º Track', '22º Track', '23º Track', '24º Track', '25º Track',
@@ -75,7 +76,7 @@ def update_music():
     track_title = st.subheader(names[session_state.track_number])
     audio_file = open(track_path[session_state.track_number], 'rb')
     audio_bytes = audio_file.read()
-    audio_bar = st.audio(audio_bytes)
+    audio_bar = st.audio(audio_bytes, format='audio/mp3')
 
 
 def add_new_use_to_json(new_user_info):
