@@ -86,7 +86,7 @@ def add_new_use_to_json(new_user_info):
     #Esto funciona para archivos que tenga en el pc
     with open(filepath) as json_file: 
         data = json.load(json_file) 
-        data = data['tempos']
+        #data = data['tempos']
         data.append(new_user_info)
 
     with open(filepath, 'w') as f:
