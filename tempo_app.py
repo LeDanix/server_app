@@ -37,7 +37,7 @@ confidence_factor = 0.7
 filepath = 'https://raw.githubusercontent.com/LeDanix/server_app/main/db.json'
 #filepath = 'https://github.com/LeDanix/server_app/blob/main/db.json'
 #filepath = 'db.json'
-headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
+headers = {'Content-type': 'application/json', 'Accept': 'application/json', 'User-Agent': 'LeDanix'}
 first_time = True
 
 
