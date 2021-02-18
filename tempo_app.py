@@ -37,7 +37,7 @@ confidence_factor = 0.7
 filepath = 'https://raw.githubusercontent.com/LeDanix/server_app/main/db.json'
 #filepath = 'https://github.com/LeDanix/server_app/blob/main/db.json'
 #filepath = 'db.json'
-#headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
+headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
 first_time = True
 
 
@@ -84,7 +84,7 @@ def update_music():
 
 def add_new_use_to_json(new_user_info):
 
-    r = requests.post(filepath, data=json.dumps(new_user_info))
+    r = requests.post(filepath, data=json.dumps(new_user_info), headers=headers)
 
     #Esto funciona para archivos que tenga en el pc
     #with open(filepath) as json_file: 
