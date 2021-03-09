@@ -1,9 +1,13 @@
 import streamlit as st
 import time
 import numpy as np
-import json
+#import json
 import requests
+#import hashlib
 #import urllib.request
+import base64
+from decouple import config
+#from github import Github
 
 try:
     import streamlit.ReportThread as ReportThread
@@ -20,13 +24,9 @@ user_tempo_tracks = [0] * 30
 final_score = 0
 questions = ['I am a musician', 'I play a instrument but I don\'t consider myself a musician ',
              'I have ever played an instrument', 'I have never played an instrument']
-track_path = ['music/Atlantic_City.mp3',
-              'music/All_Stars.mp3',  
-              'music/Atlantic_City1.mp3',
-              'music/All_Stars.mp3',
-              'music/Atlantic_City2.mp3',
-              'music/All_Stars.mp3',
-              'music/Atlantic_City3.mp3']
+track_path = ['F:\\Universidad\\TFG\IBT\\SacarDatosAuto\\ibt-1.0-win64\\Atlantic_City.wav',
+              'F:\\Universidad\\TFG\IBT\\SacarDatosAuto\\ibt-1.0-win64\\Girl_On_Girl.wav',
+              'F:\\Universidad\\TFG\IBT\\SacarDatosAuto\\ibt-1.0-win64\\a.wav']
 names = ['1º Track', '2º Track', '3º Track', '4º Track', '5º Track', '6º Track', '7º Track', '8º Track', '9º Track',
          '10º Track', '11º Track', '12º Track', '13º Track', '14º Track', '15º Track', '16º Track', '17º Track',
          '18º Track', '19º Track', '20º Track', '21º Track', '22º Track', '23º Track', '24º Track', '25º Track',
@@ -34,10 +34,12 @@ names = ['1º Track', '2º Track', '3º Track', '4º Track', '5º Track', '6º T
 truth_tempo_tracks = [108] * 30  # TODO poner los tempos de los tracks
 user_scores = [0] * 30
 confidence_factor = 0.7
-filepath = 'https://raw.githubusercontent.com/LeDanix/server_app/main/db.json'
+filepath = 'db.json'
+token = config('TOKEN')
+print(token)
 #filepath = 'https://github.com/LeDanix/server_app/blob/main/db.json'
 #filepath = 'db.json'
-headers = {'Content-type': 'application/json', 'Accept': 'application/json', 'User-Agent': 'LeDanix'}
+#headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
 first_time = True
 
 
@@ -79,12 +81,25 @@ def update_music():
     track_title = st.subheader(names[session_state.track_number])
     audio_file = open(track_path[session_state.track_number], 'rb')
     audio_bytes = audio_file.read()
-    audio_bar = st.audio(audio_bytes, format='audio/mp3')
+    audio_bar = st.audio(audio_bytes)
 
 
 def add_new_use_to_json(new_user_info):
-
-    r = requests.post(filepath, data=json.dumps(new_user_info), headers=headers)
+    data = open(filepath, "r").read()
+    data = data['tempos']
+    data.append(new_user_info)
+    #data = data.hashlib.sha
+    r = requests.put(
+        f'https://api.github.com/repos/LeDanix/server_app/db.json',
+        headers = {
+            'Authorization': f'Token {token}'
+        },
+        json = {
+            "message": "add new info",
+            "content": base64.b64encode(data.encode()).decode(),
+            "branch": "master"
+        }
+    )
 
     #Esto funciona para archivos que tenga en el pc
     #with open(filepath) as json_file: 
@@ -94,10 +109,9 @@ def add_new_use_to_json(new_user_info):
 
     #with open(filepath, 'w') as f:
     #    json.dump(data, f, indent=4) 
-        
 
 
-
+    #Probablemente tenga que borrar esto
     #json_file = urllib.request.urlopen(filepath) 
     #json_file = json_file.read()
     #if json_file == None or json_file == '':
@@ -281,7 +295,7 @@ if pressed3:
             session_state.first_time = False
             #json_data = {'tempos': [{'musical_exp': musical_exp, 'tempos_data': session_state.user_tempo_tracks}]}
             #json.dump(json_data, open(filepath, 'a'), indent=4, sort_key=True)
-            json_data = {'musical_exp': musical_exp, 'tempos_data': session_state.user_tempo_tracks, "id": 0}
+            json_data = {'musical_exp': musical_exp, 'tempos_data': session_state.user_tempo_tracks}
             #requests.post(filepath, data=json.dumps(json_data), headers=headers)
             add_new_use_to_json(json_data)
         if session_state.track_number == len(track_path) - 1:
