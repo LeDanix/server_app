@@ -6,7 +6,7 @@ import requests
 #import hashlib
 #import urllib.request
 import base64
-from decouple import config
+import dotenv
 #from github import Github
 
 try:
@@ -16,6 +16,8 @@ except Exception:
     # Streamlit >= 0.65.0
     import streamlit.report_thread as ReportThread
     from streamlit.server.server import Server
+
+require('dotenv').config()  
 
 prev_time = 0
 track_number = 0
@@ -35,12 +37,13 @@ truth_tempo_tracks = [108] * 30  # TODO poner los tempos de los tracks
 user_scores = [0] * 30
 confidence_factor = 0.7
 filepath = 'db.json'
-token = config('TOKEN')
+token = process.env.TOKEN
 print(token)
 #filepath = 'https://github.com/LeDanix/server_app/blob/main/db.json'
 #filepath = 'db.json'
 #headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
 first_time = True
+
 
 
 @st.cache
