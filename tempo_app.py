@@ -1,7 +1,7 @@
 import streamlit as st
 import time
 import numpy as np
-#import json
+import json
 import requests
 #import hashlib
 #import urllib.request
@@ -84,11 +84,13 @@ def update_music():
     audio_bar = st.audio(audio_bytes)
 
 
-def add_new_use_to_json(new_user_info):
-    data = open(filepath, "r").read()
-    data = data['tempos']
-    data.append(new_user_info)
-    #data = data.hashlib.sha
+def add_new_user_to_json(new_user_info):
+    with open(filepath) as json_file: 
+        data = json.loads(json_file.read()) 
+        #data = data['tempos']
+        data.append(new_user_info)
+    print(data)
+    #sha
     r = requests.put(
         f'https://api.github.com/repos/LeDanix/server_app/db.json',
         headers = {
@@ -96,7 +98,7 @@ def add_new_use_to_json(new_user_info):
         },
         json = {
             "message": "add new info",
-            "content": base64.b64encode(data.encode()).decode(),
+            "content": base64.b64encode(json.dumps(data).encode()).decode(),
             "branch": "master"
         }
     )
@@ -297,7 +299,7 @@ if pressed3:
             #json.dump(json_data, open(filepath, 'a'), indent=4, sort_key=True)
             json_data = {'musical_exp': musical_exp, 'tempos_data': session_state.user_tempo_tracks}
             #requests.post(filepath, data=json.dumps(json_data), headers=headers)
-            add_new_use_to_json(json_data)
+            add_new_user_to_json(json_data)
         if session_state.track_number == len(track_path) - 1:
             session_state.track_number += 1
     else:
