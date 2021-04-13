@@ -340,7 +340,7 @@ if pressed3:
             user_data[1:-1] = user_data[0:-1]
             user_data[0] = musical_exp
             #requests.post(filepath, data=json.dumps(json_data), headers=headers)
-            add_new_user(user_data)
+            #add_new_user(user_data)
 
         if session_state.track_number == len(track_path) - 1:
             session_state.track_number += 1
