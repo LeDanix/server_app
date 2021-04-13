@@ -1,4 +1,6 @@
 import streamlit as st
+import string
+import random
 import time
 import numpy as np
 import json
@@ -6,8 +8,7 @@ import requests
 #import hashlib
 #import urllib.request
 import base64
-#import nodejs
-#import dotenv
+from decouple import config
 #from github import Github
 
 try:
@@ -18,33 +19,59 @@ except Exception:
     import streamlit.report_thread as ReportThread
     from streamlit.server.server import Server
 
-require('dotenv').config()
-
 prev_time = 0
 track_number = 0
 tempos = []
+user_data = []
 user_tempo_tracks = [0] * 30
 final_score = 0
 questions = ['I am a musician', 'I play a instrument but I don\'t consider myself a musician ',
              'I have ever played an instrument', 'I have never played an instrument']
-track_path = ['F:\\Universidad\\TFG\IBT\\SacarDatosAuto\\ibt-1.0-win64\\Atlantic_City.wav',
-              'F:\\Universidad\\TFG\IBT\\SacarDatosAuto\\ibt-1.0-win64\\Girl_On_Girl.wav',
-              'F:\\Universidad\\TFG\IBT\\SacarDatosAuto\\ibt-1.0-win64\\a.wav']
+track_path = ['F:\\Universidad\\TFG\\StreamLit\\CancionesSeleccionadas\\SMC_001.wav',
+               'F:\\Universidad\\TFG\\StreamLit\\CancionesSeleccionadas\\SMC_067.wav',
+               'F:\\Universidad\\TFG\\StreamLit\\CancionesSeleccionadas\\DANI_005.wav',
+               'F:\\Universidad\\TFG\\StreamLit\\CancionesSeleccionadas\\DANI_008.wav',
+               'F:\\Universidad\\TFG\\StreamLit\\CancionesSeleccionadas\\SMC_008.wav',
+               'F:\\Universidad\\TFG\\StreamLit\\CancionesSeleccionadas\\SMC_088.wav',
+               'F:\\Universidad\\TFG\\StreamLit\\CancionesSeleccionadas\\SMC_118.wav',
+               'F:\\Universidad\\TFG\\StreamLit\\CancionesSeleccionadas\\SMC_006.wav',
+               'F:\\Universidad\\TFG\\StreamLit\\CancionesSeleccionadas\\DANI_014.wav',
+               'F:\\Universidad\\TFG\\StreamLit\\CancionesSeleccionadas\\SMC_030.wav',
+               'F:\\Universidad\\TFG\\StreamLit\\CancionesSeleccionadas\\DANI_006.wav',
+               'F:\\Universidad\\TFG\\StreamLit\\CancionesSeleccionadas\\SMC_002.wav',
+               'F:\\Universidad\\TFG\\StreamLit\\CancionesSeleccionadas\\SMC_119.wav',
+               'F:\\Universidad\\TFG\\StreamLit\\CancionesSeleccionadas\\SMC_027.wav',
+               'F:\\Universidad\\TFG\\StreamLit\\CancionesSeleccionadas\\DANI_003.wav',
+               'F:\\Universidad\\TFG\\StreamLit\\CancionesSeleccionadas\\SMC_052.wav',
+               'F:\\Universidad\\TFG\\StreamLit\\CancionesSeleccionadas\\SMC_032.wav',
+               'F:\\Universidad\\TFG\\StreamLit\\CancionesSeleccionadas\\SMC_003.wav',
+               'F:\\Universidad\\TFG\\StreamLit\\CancionesSeleccionadas\\SMC_018.wav',
+               'F:\\Universidad\\TFG\\StreamLit\\CancionesSeleccionadas\\SMC_021.wav',
+               'F:\\Universidad\\TFG\\StreamLit\\CancionesSeleccionadas\\SMC_004.wav',
+               'F:\\Universidad\\TFG\\StreamLit\\CancionesSeleccionadas\\SMC_037.wav',
+               'F:\\Universidad\\TFG\\StreamLit\\CancionesSeleccionadas\\SMC_009.wav',
+               'F:\\Universidad\\TFG\\StreamLit\\CancionesSeleccionadas\\SMC_229.wav',
+               'F:\\Universidad\\TFG\\StreamLit\\CancionesSeleccionadas\\SMC_011.wav',
+               'F:\\Universidad\\TFG\\StreamLit\\CancionesSeleccionadas\\SMC_051.wav',
+               'F:\\Universidad\\TFG\\StreamLit\\CancionesSeleccionadas\\SMC_017.wav',
+               'F:\\Universidad\\TFG\\StreamLit\\CancionesSeleccionadas\\SMC_227.wav',
+               'F:\\Universidad\\TFG\\StreamLit\\CancionesSeleccionadas\\DANI_001.wav',
+               'F:\\Universidad\\TFG\\StreamLit\\CancionesSeleccionadas\\DANI_015.wav']
+
 names = ['1º Track', '2º Track', '3º Track', '4º Track', '5º Track', '6º Track', '7º Track', '8º Track', '9º Track',
          '10º Track', '11º Track', '12º Track', '13º Track', '14º Track', '15º Track', '16º Track', '17º Track',
          '18º Track', '19º Track', '20º Track', '21º Track', '22º Track', '23º Track', '24º Track', '25º Track',
          '26º Track', '27º Track', '28º Track', '29º Track', '30º Track (Last Track)']
-truth_tempo_tracks = [108] * 30  # TODO poner los tempos de los tracks
+truth_tempo_tracks = [48, 86, 129, 162, 135, 58, 56, 59, 124, 199, 127, 66, 56, 63, 127, 91, 88, 66, 83, 89, 56, 59, 56, 75, 87, 63, 72, 64, 91, 125]  
 user_scores = [0] * 30
 confidence_factor = 0.7
 filepath = 'db.json'
-token = process.env.TOKEN
+token = config('TOKEN')
 print(token)
 #filepath = 'https://github.com/LeDanix/server_app/blob/main/db.json'
 #filepath = 'db.json'
 #headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
 first_time = True
-
 
 
 @st.cache
@@ -88,26 +115,33 @@ def update_music():
     audio_bar = st.audio(audio_bytes)
 
 
-def add_new_user_to_json(new_user_info):
-    with open(filepath) as json_file: 
-        data = json.loads(json_file.read()) 
-        #data = data['tempos']
-        data.append(new_user_info)
-    print(data)
-    #sha
-    r = requests.put(
-        f'https://api.github.com/repos/LeDanix/server_app/db.json',
-        headers = {
-            'Authorization': f'Token {token}'
-        },
-        json = {
-            "message": "add new info",
-            "content": base64.b64encode(json.dumps(data).encode()).decode(),
-            "branch": "master"
-        }
-    )
+def add_new_user(new_user_info):
+    aux_name = string.ascii_lowercase
+    file = open("/Resultados/{}".format(random.choice(aux_name) for i in range(10)), "w")
+    for k in new_user_info:
+        file.write(str(k) + '\n')
 
-    #Esto funciona para archivos que tenga en el pc
+#def add_new_user_to_json(new_user_info):
+    #Escribe distintos archivos con datos
+    #with open(filepath) as json_file: 
+    #    data = json.loads(json_file.read()) 
+    #    #data = data['tempos']
+    #    data.append(new_user_info)
+    #print(data)
+    #sha
+    #r = requests.put(
+    #    f'https://api.github.com/repos/LeDanix/server_app/db.json',
+    #    headers = {
+    #        'Authorization': f'Token {token}'
+    #    },
+    #    json = {
+    #        "message": "add new info",
+    #        "content": base64.b64encode(json.dumps(data).encode()).decode(),
+    #        "branch": "master"
+    #    }
+    #)
+
+    #Esto funciona para archivos que tenga en el pc, archivo json
     #with open(filepath) as json_file: 
     #    data = json.load(json_file) 
     #    #data = data['tempos']
@@ -301,9 +335,13 @@ if pressed3:
             session_state.first_time = False
             #json_data = {'tempos': [{'musical_exp': musical_exp, 'tempos_data': session_state.user_tempo_tracks}]}
             #json.dump(json_data, open(filepath, 'a'), indent=4, sort_key=True)
-            json_data = {'musical_exp': musical_exp, 'tempos_data': session_state.user_tempo_tracks}
+            #json_data = {'musical_exp': musical_exp, 'tempos_data': session_state.user_tempo_tracks}
+            user_data = session_state.user_tempo_tracks
+            user_data[1:-1] = user_data[0:-1]
+            user_data[0] = musical_exp
             #requests.post(filepath, data=json.dumps(json_data), headers=headers)
-            add_new_user_to_json(json_data)
+            add_new_user(user_data)
+
         if session_state.track_number == len(track_path) - 1:
             session_state.track_number += 1
     else:
