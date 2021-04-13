@@ -6,7 +6,8 @@ import requests
 #import hashlib
 #import urllib.request
 import base64
-import dotenv
+#import nodejs
+#import dotenv
 #from github import Github
 
 try:
@@ -17,7 +18,7 @@ except Exception:
     import streamlit.report_thread as ReportThread
     from streamlit.server.server import Server
 
-require('dotenv').config()  
+require('dotenv').config()
 
 prev_time = 0
 track_number = 0
