@@ -3,12 +3,13 @@ import string
 import random
 import time
 import numpy as np
-import json
-import requests
+import pandas as pd
+#import json
+#import requests
 #import hashlib
 #import urllib.request
-import base64
-from decouple import config
+#import base64
+#from decouple import config
 #from github import Github
 
 try:
@@ -78,20 +79,23 @@ first_time = True
 def give_a_score(truth_tempo, tempo_user, conf_fact, track_number1):
     score = 0
     percent = (1 - np.abs(truth_tempo - tempo_user) / truth_tempo)
-    if percent < 0.7:
+    if percent < 0.3:
         session_state.user_scores[track_number1] = score
     else:
         a = np.log(11) / ((1 - conf_fact) * truth_tempo)
         score = -np.exp(a * np.abs(truth_tempo - tempo_user)) + 11
+        if score < 0: score = 0
         session_state.user_scores[track_number1] = score
 
 
 def control():
     if len(session_state.tempos) > 0:
-        session_state.tempos.pop(0)  # TODO Advertir que no se ha realizado ninguna puntuacion
+        session_state.tempos.pop(0)
         if len(session_state.tempos) > 0:
+            tempos_pd = pd.Series(session_state.tempos) #Filtrate outliers values 
+            tempos_pd = tempos_pd[tempos_pd.between(tempos_pd.quantile(0.15), tempos_pd.quantile(0.85))]
             session_state.user_tempo_tracks[session_state.track_number] = \
-                60.0 / (sum(session_state.tempos) / len(session_state.tempos))
+                60.0 / (sum(tempos_pd) / len(tempos_pd))
 
             give_a_score(truth_tempo_tracks[session_state.track_number],
                          session_state.user_tempo_tracks[session_state.track_number],
@@ -115,11 +119,11 @@ def update_music():
     audio_bar = st.audio(audio_bytes)
 
 
-def add_new_user(new_user_info):
+""" def add_new_user(new_user_info):
     aux_name = string.ascii_lowercase
     file = open("/Resultados/{}".format(random.choice(aux_name) for i in range(10)), "w")
     for k in new_user_info:
-        file.write(str(k) + '\n')
+        file.write(str(k) + '\n') """
 
 #def add_new_user_to_json(new_user_info):
     #Escribe distintos archivos con datos
@@ -336,9 +340,9 @@ if pressed3:
             #json_data = {'tempos': [{'musical_exp': musical_exp, 'tempos_data': session_state.user_tempo_tracks}]}
             #json.dump(json_data, open(filepath, 'a'), indent=4, sort_key=True)
             #json_data = {'musical_exp': musical_exp, 'tempos_data': session_state.user_tempo_tracks}
-            user_data = session_state.user_tempo_tracks
-            user_data[1:-1] = user_data[0:-1]
-            user_data[0] = musical_exp
+            #user_data = session_state.user_tempo_tracks
+            #user_data[1:-1] = user_data[0:-1]
+            #user_data[0] = musical_exp
             #requests.post(filepath, data=json.dumps(json_data), headers=headers)
             #add_new_user(user_data)
 
@@ -372,7 +376,7 @@ pressed2 = right_column.button('REPEAT   🔄')
 
 if pressed1 and session_state.track_number < len(track_path):
     act_time = time.time()
-    aux_tempo = act_time - session_state.prev_time  # TODO Arreglar esto, no cambia el prev_time
+    aux_tempo = act_time - session_state.prev_time  
     session_state.tempos.append(aux_tempo)
     session_state.prev_time = act_time
 
