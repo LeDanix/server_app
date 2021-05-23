@@ -66,9 +66,9 @@ names = ['1º Track', '2º Track', '3º Track', '4º Track', '5º Track', '6º T
 truth_tempo_tracks = [48, 86, 129, 162, 135, 58, 56, 59, 124, 199, 127, 66, 56, 63, 127, 91, 88, 66, 83, 89, 56, 59, 56, 75, 87, 63, 72, 64, 91, 125]  
 user_scores = [0] * 30
 confidence_factor = 0.7
-filepath = 'db.json'
-token = config('TOKEN')
-print(token)
+#filepath = 'db.json'
+#token = config('TOKEN')
+#print(token)
 #filepath = 'https://github.com/LeDanix/server_app/blob/main/db.json'
 #filepath = 'db.json'
 #headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
@@ -324,13 +324,9 @@ left_column2, right_column2 = st.beta_columns(2)
 pressed3 = right_column2.button('NEXT  ➡')
 pressed4 = left_column2.button('⬅  PREVIOUS')
 
-# Cabe la posibilidad de que en algun momento, algun participante deje alguna cancion
-# sin rellenar, o saque un resultado muy malo porque ha hecho mal el proceso. Esos
-# habra que eliminarlos de la estadistica en MatLab
-
 
 if pressed3:
-    if session_state.track_number >= len(track_path) - 1:  # TODO acordarse de cambiar esto
+    if session_state.track_number >= len(track_path) - 1:
         control()
         session_state.final_score = sum(session_state.user_scores) / float(
             len(session_state.user_scores))  # Suma puntuaciones
