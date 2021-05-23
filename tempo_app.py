@@ -75,6 +75,7 @@ confidence_factor = 0.7
 first_time = True
 
 
+
 @st.cache
 def give_a_score(truth_tempo, tempo_user, conf_fact, track_number1):
     score = 0
