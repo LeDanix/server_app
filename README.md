@@ -7,17 +7,10 @@ This web app is part of my final degree proyect and finds out the capability of 
 The web evaluates you into this discipline and gets you a final score based on your accuracy.
 Feel free to prove it.
 
-
 Good Luck
 
 ### Link to the app:
 [https://tempo-tracking-app.herokuapp.com/](https://tempo-tracking-app.herokuapp.com/)
 
 
-
-
-
-
-
-
-Powered by Streamlit.
+*Powered by Streamlit*
