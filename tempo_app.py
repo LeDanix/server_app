@@ -55,7 +55,7 @@ track_path = ['music/SMC_001.wav',
                'music/SMC_011.wav',
                'music/SMC_051.wav',
                'music/SMC_017.wav',
-               'music/SMC_227.wav',
+               'music/SMC_277.wav',
                'music/DANI_001.wav',
                'music/DANI_015.wav']
 
@@ -63,7 +63,7 @@ names = ['1º Track', '2º Track', '3º Track', '4º Track', '5º Track', '6º T
          '10º Track', '11º Track', '12º Track', '13º Track', '14º Track', '15º Track', '16º Track', '17º Track',
          '18º Track', '19º Track', '20º Track', '21º Track', '22º Track', '23º Track', '24º Track', '25º Track',
          '26º Track', '27º Track', '28º Track', '29º Track', '30º Track (Last Track)']
-truth_tempo_tracks = [48, 86, 129, 162, 135, 58, 56, 59, 124, 199, 127, 66, 56, 63, 127, 91, 88, 66, 83, 89, 56, 59, 56, 75, 87, 63, 72, 64, 91, 125]  
+truth_tempo_tracks = [48, 86, 129, 126, 135, 58, 56, 59, 124, 199, 127, 66, 56, 63, 127, 91, 88, 66, 83, 89, 56, 59, 56, 75, 87, 63, 72, 64, 91, 125]  
 user_scores = [0] * 30
 confidence_factor = 0.7
 #filepath = 'db.json'
