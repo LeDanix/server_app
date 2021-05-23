@@ -120,11 +120,11 @@ def update_music():
     audio_bar = st.audio(audio_bytes)
 
 
-""" def add_new_user(new_user_info):
-    aux_name = string.ascii_lowercase
-    file = open("/Resultados/{}".format(random.choice(aux_name) for i in range(10)), "w")
-    for k in new_user_info:
-        file.write(str(k) + '\n') """
+#def add_new_user(new_user_info):
+    #aux_name = string.ascii_lowercase
+    #file = open("/Resultados/{}".format(random.choice(aux_name) for i in range(10)), "w")
+    #for k in new_user_info:
+    #    file.write(str(k) + '\n')
 
 #def add_new_user_to_json(new_user_info):
     #Escribe distintos archivos con datos
