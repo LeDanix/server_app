@@ -3,8 +3,10 @@
 ### Welcome to my tempo tracking quiz. 
 
 
-This web app is part of my final degree proyect and finds out the capability of people following the musical tempo of diferents tracks.
-The web evaluates you into this discipline and gets you a final score based on your accuracy.
+This web app is part of my final degree proyect and finds out the capability of people following the musical tempo.
+
+It's formed by 30 tracks with diferents tempos and musical genres.
+The web evaluates and gets you a final score based on your accuracy.
 Feel free to prove it.
 
 Good Luck
